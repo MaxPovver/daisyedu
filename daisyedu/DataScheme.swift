@@ -13,13 +13,14 @@ import Foundation;
 */
 //для хранения подробной инфы о документе
 public class Document {
-    private var _id:String;
-    private var _title:String;
-    private var _description:String;
-    private var _published:String;
-    private var _introtext:String;
-    private var _createdon:String;
-    private var _editedon:String;
+    private var _id = "";
+    private var _parent = "";
+    private var _title = "";
+    private var _description = "";
+    private var _published = "";
+    private var _introtext = "";
+    private var _createdon = "";
+    private var _editedon = "";
     public init(_json:String) {
         var err: NSError?
         var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
@@ -33,7 +34,9 @@ public class Document {
                         if let _introtext = json["introtext"] as? String{
                             if let _createdon = json["createdon"] as? String{
                                 if let _editedon = json["publishedon"] as? String{
-                                    return true;
+                                    if let _parent = json["parent"] as? String {
+                                            return true;
+                                        }
                                 }
                             }
                         }
@@ -46,9 +49,10 @@ public class Document {
     public init(WithJSON json:[NSObject:AnyObject]) {
         if !initwj(json) { exit(42); }
     }
-    public init(ID __id:String,Title __title:String, Description __desc:String,
+    public init(ID __id:String,Parent __parent:String,Title __title:String, Description __desc:String,
         PublishedOn __publ:String, Introtext __intro:String, CreatedOn __created:String, EditedOn __edited:String) {
         _id = __id;
+        _parent = __parent;
         _title = __title;
         _description = __desc;
         _published = __publ;
@@ -59,13 +63,18 @@ public class Document {
     public func getID()->String {
     return _id;
     }
+    public func getParent()->String {
+        return _parent;
+    }
     public func getTitle()->String {
         return _title;
     }
     public func getIntrotext()->String {
         return _introtext;
     }
-    public func isPublished()->Bool { return _published == "true"; }
+    public func isPublished()->Bool {
+        return _published == "true";
+    }
     public func getCreationDate()->String {
         return _createdon;
     }
@@ -76,7 +85,23 @@ public class Document {
 
 //для хранения списка статей(без текста?)
 public class DocumentsList {
-    private var docs:[Documents];
+    private var docs:[Document];
+    public init(RawJSON rawJson:String) {
+        var err: NSError?
+        var json = NSJSONSerialization.JSONObjectWithData(rawJson.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
+        func converter()(el:AnyObject)->Document {
+                return Document(WithJSON: el as [NSObject:AnyObject])
+        }
+        if let count = json["total"] as? NSInteger {
+            
+            if let results = json["results"] as? [AnyObject]{
+               
+                docs = results.map(converter())
+                return;
+            }
+        }
+        exit(42);
+    }
 }
 
 
