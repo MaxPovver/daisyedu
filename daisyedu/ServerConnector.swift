@@ -10,8 +10,28 @@ import Foundation;
 
 //вся работа с серверным апи идет через него
 public class Server {
-    let serviceURL = "http://daisyedu.com/rest/resource";
-    var data 
+    let resources = "http://daisyedu.com/rest/resource";
+    let resource = "http://daisyedu.com/rest/resource&id=";
+    var data = DocumentsList();
+    var useCache=false;
+    public init() {
+        if !useCache {
+            let request = self.resources
+            let encoded = request.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+            var url: NSURL = NSURL( string: encoded!)!
+            var session = NSURLSession.sharedSession()
+            var task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
+                println("Task completed")
+                if((error) != nil) {
+                    println(error.localizedDescription)
+                }
+                dispatch_async(dispatch_get_main_queue(), {
+                self.data = DocumentsList(RawJSON: NSString(data:data, encoding:NSUTF8StringEncoding)!)
+                })
+            })
+            task.resume()
+        } else { exit(42);}
+    }
 }
 
 //в фоновом потоке работает, изредка дергает основной по событиям
