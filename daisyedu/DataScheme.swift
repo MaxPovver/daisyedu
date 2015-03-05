@@ -56,9 +56,68 @@ public class Document {
         _createdon = __created;
         _editedon = __edited;
     }
+    public func getID()->String {
+    return _id;
+    }
+    public func getTitle()->String {
+        return _title;
+    }
+    public func getIntrotext()->String {
+        return _introtext;
+    }
+    public func isPublished()->Bool { return _published == "true"; }
+    public func getCreationDate()->String {
+        return _createdon;
+    }
+    public func getEditDate()->String {
+        return _editedon;
+    }
 }
 
 //для хранения списка статей(без текста?)
 public class DocumentsList {
     private var docs:[Documents];
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
