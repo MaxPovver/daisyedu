@@ -14,9 +14,17 @@ public class Server {
     let resource = "http://daisyedu.com/rest/resource&id=";
     var data = DocumentsList();
     var useCache=false;
-    public init() {
+    public var Bad = false;
+    var loadedCallback:()->Void;
+    public init()
+    {
+        loadedCallback = {}
+        Bad = true
+    }
+    public init(loadedCallback lbc:()->Void) {
         if !useCache {
             let request = self.resources
+            loadedCallback = lbc
             let encoded = request.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
             var url: NSURL = NSURL( string: encoded!)!
             var session = NSURLSession.sharedSession()
@@ -27,10 +35,42 @@ public class Server {
                 }
                 dispatch_async(dispatch_get_main_queue(), {
                 self.data = DocumentsList(RawJSON: NSString(data:data, encoding:NSUTF8StringEncoding)!)
+                    lbc();
                 })
             })
             task.resume()
         } else { exit(42);}
+    }
+    public func getDocs()->DocumentsList {
+        return data
+    }
+    //получает из сети полную инфу по конкретному доку
+    //сразу возвращает из кеша(если есть), либо заглушку
+    public func load(sd:SmallDocument, real:(Document)->Void)->Document {
+        var res:Document?;
+       let d = NSUserDefaults.standardUserDefaults()
+        res = d.objectForKey("document\(sd.getID())") as Document?
+        if res == nil {
+            res = Document.stub()
+        }
+        let request = self.resource + "\(sd.getID())"
+        let encoded = request.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        var url: NSURL = NSURL( string: encoded!)!
+        var session = NSURLSession.sharedSession()
+        var task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
+            println("Task completed")
+            if((error) != nil) {
+                println(error.localizedDescription)
+            }
+            dispatch_async(dispatch_get_main_queue(), {
+                var x = Document(_json: NSString(data:data, encoding:NSUTF8StringEncoding)!)
+                d.setObject(x, forKey: "document\(sd.getID())")
+                real(x);
+            })
+        })
+        task.resume()
+        
+        return res!;
     }
 }
 

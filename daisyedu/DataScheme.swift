@@ -13,9 +13,11 @@ import Foundation;
 */
 //для хранения подробной инфы о документе
 public class Document {
-    private var _id = "";
-    private var _parent = "";
+    public class func stub()->Document {return Document(ID: 0,Title: "Загрузка...",Content: "Загрузка...Подождите, пожалуйста")}
+    private var _id = 0;
+    private var _parent = 0;
     private var _title = "";
+    private var _content = "";
     private var _description = "";
     private var _published = "";
     private var _introtext = "";
@@ -27,16 +29,26 @@ public class Document {
         if !initwj(json) { exit(42); }
     }
     private func initwj(json:[NSObject:AnyObject])->Bool {
-        if let _id = json["id"] as? String{
-            if let _title = json["pagetitle"] as? String{
-                if let _description = json["description"] as? String{
-                    if let _published = json["published"] as? String{
-                        if let _introtext = json["introtext"] as? String{
-                            if let _createdon = json["createdon"] as? String{
-                                if let _editedon = json["publishedon"] as? String{
-                                    if let _parent = json["parent"] as? String {
+        if let __id = json["id"] as? Int{
+            if let __title = json["pagetitle"] as? String{
+                if let __description = json["description"] as? String{
+                    if let __published = json["published"] as? String{
+                        if let __introtext = json["introtext"] as? String{
+                            if let __createdon = json["createdon"] as? String{
+                                if let __editedon = json["publishedon"] as? String{
+                                    if let __parent = json["parent"] as? Int {
+                                        if let __content = json["content"] as? String {
+                                            _id = __id
+                                            _title = __title
+                                            _description = __description
+                                            _published = __published
+                                            _introtext = __introtext
+                                            _createdon = __createdon
+                                            _editedon = __editedon
+                                            _content = __content
                                             return true;
                                         }
+                                    }
                                 }
                             }
                         }
@@ -49,9 +61,10 @@ public class Document {
     public init(WithJSON json:[NSObject:AnyObject]) {
         if !initwj(json) { exit(42); }
     }
-    public init(ID __id:String,Parent __parent:String,Title __title:String, Description __desc:String,
+    public init(ID __id:Int,Parent __parent:Int,Title __title:String, Content __content:String,Description __desc:String,
         PublishedOn __publ:String, Introtext __intro:String, CreatedOn __created:String, EditedOn __edited:String) {
         _id = __id;
+        _content = __content
         _parent = __parent;
         _title = __title;
         _description = __desc;
@@ -60,10 +73,15 @@ public class Document {
         _createdon = __created;
         _editedon = __edited;
     }
-    public func getID()->String {
+    public init(ID id:Int,Title title:String,Content content:String) {
+        _id = id
+        _title = title
+        _content = content
+    }
+    public func getID()->Int {
     return _id;
     }
-    public func getParent()->String {
+    public func getParent()->Int {
         return _parent;
     }
     public func getTitle()->String {
@@ -86,21 +104,20 @@ public class Document {
 public class SmallDocument {
     private var _id = 0;
     private var _title = "";
-    private func initwj(json:[NSObject:AnyObject])->Bool {
-        if let _id = json["id"] as? Int{
-            if let _title = json["pagetitle"] as? String{
-                return true;
-            }
+    private func initwj(json:[NSObject:AnyObject]) {
+        if json["id"]==nil || json["pagetitle"]==nil {
+            exit(42)
         }
-        return false;
+        _id = json["id"] as Int
+        _title = json["pagetitle"] as String
     }
     public init(_json:String) {
         var err: NSError?
         var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
-        if !initwj(json) { exit(42); }
+        initwj(json)
     }
     public init(WithJSON json:[NSObject:AnyObject]) {
-        if !initwj(json) { exit(42); }
+        initwj(json)
     }
     public func getID()->Int {
         return _id;
@@ -114,6 +131,12 @@ public class SmallDocument {
 public class DocumentsList {
     private var docs:[SmallDocument];
     public init(RawJSON rawJson:String) {
+        if(rawJson.isEmpty) {
+            //TODO: обрабатывать тут пустую строку
+            docs = [SmallDocument]()
+            println("Empty server response")
+            return;
+        } else {
         var err: NSError?
         var json = NSJSONSerialization.JSONObjectWithData(rawJson.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
         println(rawJson)
@@ -123,14 +146,24 @@ public class DocumentsList {
         if let count = json["total"] as? NSInteger {
             
             if let results = json["results"] as? [NSDictionary]{
-               
                 docs = results.map(converter())
                 return;
             }
         }
         exit(42);
+        }
     }
     public init(){ docs = [SmallDocument]()}
+    public func count()->Int {
+        return docs.count
+    }
+    public func at(_i:Int)->SmallDocument {
+        let x  = docs[_i]
+        return x
+    }
+    public func asCollection()->[SmallDocument] {
+        return docs
+    }
 }
 
 
