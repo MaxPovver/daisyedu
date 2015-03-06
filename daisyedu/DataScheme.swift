@@ -82,19 +82,47 @@ public class Document {
         return _editedon;
     }
 }
+//минифицированная версия документа для списка курсов(только заголовок и id)
+public class SmallDocument {
+    private var _id = 0;
+    private var _title = "";
+    private func initwj(json:[NSObject:AnyObject])->Bool {
+        if let _id = json["id"] as? Int{
+            if let _title = json["pagetitle"] as? String{
+                return true;
+            }
+        }
+        return false;
+    }
+    public init(_json:String) {
+        var err: NSError?
+        var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
+        if !initwj(json) { exit(42); }
+    }
+    public init(WithJSON json:[NSObject:AnyObject]) {
+        if !initwj(json) { exit(42); }
+    }
+    public func getID()->Int {
+        return _id;
+    }
+    public func getTitle()->String {
+        return _title;
+    }
+}
 
 //для хранения списка статей(без текста?)
 public class DocumentsList {
-    private var docs:[Document];
+    private var docs:[SmallDocument];
     public init(RawJSON rawJson:String) {
         var err: NSError?
         var json = NSJSONSerialization.JSONObjectWithData(rawJson.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
-        func converter()(el:AnyObject)->Document {
-                return Document(WithJSON: el as [NSObject:AnyObject])
+        println(rawJson)
+        func converter()(el:AnyObject)->SmallDocument {
+                return SmallDocument(WithJSON: el as NSDictionary)
         }
         if let count = json["total"] as? NSInteger {
             
-            if let results = json["results"] as? [AnyObject]{
+            if let results = json["results"] as? [NSDictionary]{
                
                 docs = results.map(converter())
                 return;
@@ -102,7 +130,7 @@ public class DocumentsList {
         }
         exit(42);
     }
-    public init(){ docs = [Document]()}
+    public init(){ docs = [SmallDocument]()}
 }
 
 

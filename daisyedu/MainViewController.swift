@@ -8,11 +8,16 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MainViewController: UITableViewController {
 
+    required init(coder aDecoder: NSCoder) {
+        server = Server()
+        super.init(coder: aDecoder)
+        
+    }
+    var server:Server;
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
