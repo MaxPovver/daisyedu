@@ -179,6 +179,7 @@ public class DocumentsList {
                 docs = results.map({SmallDocument(WithJSON: $0 as NSDictionary)})//лямбда-магия)
                 tree = DocTree(root: SmallDocument(WithJSON: ["id":0,"parent":0,"pagetitle":"Меню"]));
                 tree.addRange(docs)
+                tree.print()
                 return;
             }
         }
@@ -232,6 +233,28 @@ class DocTree {
     }
     func add(t:SmallDocument)->Bool {
         return add(t,current: tree)
+    }
+    func print() {
+        println("\( tree.value.getID())"+tree.value.getTitle())
+        var prev = tree.value.getTitle()+" ---> "
+        for(val) in tree.children {
+            println( prev+val.value.getTitle())
+        }
+        for (val1) in tree.children {
+            var prev2 = prev+val1.value.getTitle() + " ---> "
+            for (val2) in val1.children {
+                println( prev2+val2.value.getTitle())
+            }
+        }
+        for (val1) in tree.children {
+            var prev2 = prev+val1.value.getTitle() + " ---> "
+            for (val2) in val1.children {
+                var prev3 = prev2+val2.value.getTitle() + " ---> "
+                for (val3) in val2.children {
+                    println( prev3+val3.value.getTitle())
+                }
+            }
+        }
     }
     func addRange(var ts:[SmallDocument]) {
         while !ts.isEmpty {
