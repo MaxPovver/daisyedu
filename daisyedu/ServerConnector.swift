@@ -22,24 +22,29 @@ public class Server {
         Bad = true
     }
     public init(loadedCallback lbc:()->Void) {
-        if !useCache {
-            let request = self.resources
-            loadedCallback = lbc
-            let encoded = request.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-            var url: NSURL = NSURL( string: encoded!)!
-            var session = NSURLSession.sharedSession()
-            var task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
-                println("Docs list loaded")
-                if((error) != nil) {
-                    println(error.localizedDescription)
-                }
-                dispatch_async(dispatch_get_main_queue(), {
+        let request = self.resources
+        loadedCallback = lbc
+        if useCache {
+            if let tmp = NSUserDefaults.standardUserDefaults().objectForKey("docs_list") as? [NSObject:AnyObject] {
+                self.data = DocumentsList(json: tmp)
+                loadedCallback()
+            }
+        }
+        let encoded = request.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        var url: NSURL = NSURL( string: encoded!)!
+        var session = NSURLSession.sharedSession()
+        var task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
+            println("Docs list loaded")
+            if((error) != nil) {
+                println(error.localizedDescription)
+            }
+            dispatch_async(dispatch_get_main_queue(), {
                 self.data = DocumentsList(RawJSON: NSString(data:data, encoding:NSUTF8StringEncoding)!)
-                    lbc();
+                self.loadedCallback()
                 })
+            NSUserDefaults.standardUserDefaults().setObject(self.data.back(), forKey: "docs_list")
             })
             task.resume()
-        } else { exit(42);}
     }
     public func getDocs()->DocumentsList {
         return data

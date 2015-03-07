@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="r2B-On-Mie">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="fkk-sI-xUE">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
@@ -33,13 +33,14 @@
                             <outlet property="delegate" destination="r2B-On-Mie" id="JuT-C4-msD"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="s09-qd-Kez"/>
                     <connections>
                         <segue destination="Jn3-Sl-RXJ" kind="show" identifier="ShowDetail" id="DBx-22-WM9"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ydJ-8M-bVU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="477" y="287"/>
+            <point key="canvasLocation" x="1289" y="287"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="dVF-o1-3YL">
@@ -53,27 +54,44 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dQh-fb-N5b">
-                                <rect key="frame" x="16" y="63" width="568" height="509"/>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dQh-fb-N5b">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Заголовок" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ssR-to-Lls">
-                                <rect key="frame" x="233" y="20" width="86" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="dQh-fb-N5b" firstAttribute="leading" secondItem="3nK-83-Zlg" secondAttribute="leading" id="BwS-eD-3pM"/>
+                            <constraint firstAttribute="bottom" secondItem="dQh-fb-N5b" secondAttribute="bottom" id="LMC-Xl-gXh"/>
+                            <constraint firstAttribute="trailing" secondItem="dQh-fb-N5b" secondAttribute="trailing" id="pz9-wE-W0a"/>
+                            <constraint firstItem="dQh-fb-N5b" firstAttribute="top" secondItem="3nK-83-Zlg" secondAttribute="top" id="qaL-Hi-Zni"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="Content" destination="dQh-fb-N5b" id="L05-ws-Up3"/>
-                        <outlet property="Title" destination="ssR-to-Lls" id="jut-ik-O95"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FKd-oR-BSy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1200" y="287"/>
+            <point key="canvasLocation" x="2004" y="205"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="B1T-Sr-abW">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fkk-sI-xUE" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="jP2-yR-Hyb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="r2B-On-Mie" kind="relationship" relationship="rootViewController" id="OIx-Vo-Bch"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Tc-3C-O4B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="477" y="287"/>
         </scene>
     </scenes>
 </document>

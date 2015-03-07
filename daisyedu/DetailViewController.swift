@@ -9,7 +9,6 @@ import UIKit
 
  class DetailViewController: UIViewController {
     
-    @IBOutlet weak var Title: UILabel!
     @IBOutlet weak var Content: UIWebView!
     required init(coder aDecoder: NSCoder) {
         doc = Document.stub()
@@ -28,7 +27,8 @@ import UIKit
     func setDoc( d:Document) { doc = d}
     func recieve(document:Document) {
         doc = document
-        Title.text = doc.getTitle()
-        Content.loadHTMLString(doc.getContent(), baseURL: NSURL(string: "localhost"))
+       // Title.text = doc.getTitle()
+        navigationItem.title = doc.getTitle()
+        Content.loadHTMLString(doc.getContent(), baseURL: NSURL(string: "http://daisyedu.com/"))
     }
 }

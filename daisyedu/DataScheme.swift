@@ -126,12 +126,14 @@ public class Document {
 public class SmallDocument {
     private var _id = 0;
     private var _title = "";
+    private var _parent = 0;
     private func initwj(json:[NSObject:AnyObject]) {
-        if json["id"]==nil || json["pagetitle"]==nil {
+        if json["id"]==nil || json["pagetitle"]==nil || json["parent"]==nil {
             exit(42)
         }
         _id = json["id"] as Int
         _title = json["pagetitle"] as String
+        _parent = json["parent"] as Int
     }
     public init(_json:String) {
         var err: NSError?
@@ -141,41 +143,62 @@ public class SmallDocument {
     public init(WithJSON json:[NSObject:AnyObject]) {
         initwj(json)
     }
+    public init() {}
     public func getID()->Int {
-        return _id;
+        return _id
     }
     public func getTitle()->String {
-        return _title;
+        return _title
+    }
+    public func getParent()->Int {
+        return _parent
+    }
+    public func back()->[NSObject:AnyObject] {
+        return ["id":getID(),"pagetitle":getTitle(),"parent":getParent()];
     }
 }
 
 //для хранения списка статей(без текста?)
 public class DocumentsList {
     private var docs:[SmallDocument];
+    private var tree:DocTree;
     public init(RawJSON rawJson:String) {
         if(rawJson.isEmpty) {
             //TODO: обрабатывать тут пустую строку
             docs = [SmallDocument]()
+            tree = DocTree(root: SmallDocument())
             println("Empty server response")
             return;
         } else {
         var err: NSError?
         var json = NSJSONSerialization.JSONObjectWithData(rawJson.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
         println(rawJson)
-        func converter()(el:AnyObject)->SmallDocument {
-                return SmallDocument(WithJSON: el as NSDictionary)
-        }
         if let count = json["total"] as? NSInteger {
             
             if let results = json["results"] as? [NSDictionary]{
-                docs = results.map(converter())
+                docs = results.map({SmallDocument(WithJSON: $0 as NSDictionary)})//лямбда-магия)
+                tree = DocTree(root: SmallDocument(WithJSON: ["id":0,"parent":0,"pagetitle":"Меню"]));
+                tree.addRange(docs)
+                return;
+            }
+        }
+        
+        exit(42);
+        }
+    }
+    public init(json:[NSObject:AnyObject]) {
+        if let count = json["total"] as? NSInteger {
+            
+            if let results = json["results"] as? [NSDictionary]{
+                docs = results.map({SmallDocument(WithJSON: $0 as NSDictionary)})//и еще лямбда магия
+                tree = DocTree(root: SmallDocument(WithJSON: ["id":0,"parent":0,"pagetitle":"Меню"]));
+                tree.addRange(docs)
                 return;
             }
         }
         exit(42);
-        }
     }
-    public init(){ docs = [SmallDocument]()}
+    public init(){ docs = [SmallDocument](); tree=DocTree(root:SmallDocument())}
     public func count()->Int {
         return docs.count
     }
@@ -186,11 +209,61 @@ public class DocumentsList {
     public func asCollection()->[SmallDocument] {
         return docs
     }
+    public func back()->[NSObject:AnyObject] {
+        return ["total":docs.count,"results":docs.map({$0.back()})]//немного лямбда магии :))
+    }
 }
 
+public class TreeNode {
+    public var parentid = 0;
+    public var value = SmallDocument();
+    public var children = [TreeNode]();
+    public init(parentid:Int, value: SmallDocument, children: [TreeNode]) {
+        self.parentid = parentid
+        self.value = value
+        self.children = children
+    }
+}
 
+class DocTree {
+    var tree: TreeNode;
+    init(root:SmallDocument) {
+        tree  = TreeNode(parentid: 0, value: root, children: [])
+    }
+    func add(t:SmallDocument)->Bool {
+        return add(t,current: tree)
+    }
+    func addRange(var ts:[SmallDocument]) {
+        while !ts.isEmpty {
+            var remove = [Int]()
+            for(index,val) in enumerate(ts) {
+                if add(val) {
+                    remove.append(index)
+                }
+            }
+            remove.sort(>);
+            for (val) in remove {
+                ts.removeAtIndex(val)
+            }
+            
+        }
+    }
+    ///функция  для добавления в сформированное дерево
+    private func add(t:SmallDocument,current:TreeNode)->Bool {
+        if current.value.getID() != t.getParent() {
+            for (value) in current.children {
+                if add(t,current: value) {
+                    return true;
+                }
+            }
+        } else {
+            current.children.append(TreeNode(parentid: t.getParent(), value: t, children: []))
+            return true
+        }
+        return false
+    }
 
-
+}
 
 
 
