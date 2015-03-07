@@ -34,10 +34,16 @@ class MainViewController: UITableViewController {
         return cell
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        //
+        performSegueWithIdentifier("ShowDetail", sender: indexPath.item)
     }
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return server.getDocs().count()
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let item = server.getDocs().at(sender as Int)
+    let d =  segue.destinationViewController as DetailViewController
+        let tmp = server.load(item, real: d.recieve)
+        d.setDoc(tmp)
     }
 
 }

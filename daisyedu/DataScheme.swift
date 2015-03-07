@@ -19,7 +19,7 @@ public class Document {
     private var _title = "";
     private var _content = "";
     private var _description = "";
-    private var _published = "";
+    private var _published = false;
     private var _introtext = "";
     private var _createdon = "";
     private var _editedon = "";
@@ -28,17 +28,19 @@ public class Document {
         var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
         if !initwj(json) { exit(42); }
     }
-    private func initwj(json:[NSObject:AnyObject])->Bool {
+    private func initwj(_json:[NSObject:AnyObject])->Bool {
+        let json = _json["object"] as NSDictionary
         if let __id = json["id"] as? Int{
             if let __title = json["pagetitle"] as? String{
                 if let __description = json["description"] as? String{
-                    if let __published = json["published"] as? String{
+                    if let __published = json["published"] as? Bool{
                         if let __introtext = json["introtext"] as? String{
                             if let __createdon = json["createdon"] as? String{
-                                if let __editedon = json["publishedon"] as? String{
+                                if let __editedon = json["editedon"] as? String{
                                     if let __parent = json["parent"] as? Int {
                                         if let __content = json["content"] as? String {
                                             _id = __id
+                                            _parent = __parent
                                             _title = __title
                                             _description = __description
                                             _published = __published
@@ -62,7 +64,7 @@ public class Document {
         if !initwj(json) { exit(42); }
     }
     public init(ID __id:Int,Parent __parent:Int,Title __title:String, Content __content:String,Description __desc:String,
-        PublishedOn __publ:String, Introtext __intro:String, CreatedOn __created:String, EditedOn __edited:String) {
+        Published __publ:Bool, Introtext __intro:String, CreatedOn __created:String, EditedOn __edited:String) {
         _id = __id;
         _content = __content
         _parent = __parent;
@@ -81,23 +83,43 @@ public class Document {
     public func getID()->Int {
     return _id;
     }
+    public func getDescription()->String {
+        return _description
+    }
     public func getParent()->Int {
-        return _parent;
+        return _parent
     }
     public func getTitle()->String {
-        return _title;
+        return _title
+    }
+    public func getContent()->String {
+        return _content
     }
     public func getIntrotext()->String {
-        return _introtext;
+        return _introtext
     }
     public func isPublished()->Bool {
-        return _published == "true";
+        return _published
     }
     public func getCreationDate()->String {
-        return _createdon;
+        return _createdon
     }
     public func getEditDate()->String {
-        return _editedon;
+        return _editedon
+    }
+    //конвертирует докумен обратно в json объект(для кеширования)
+    public func back()->[String:AnyObject] {
+        return ["object":[
+                            "id":getID(),
+                            "parent":getParent(),
+                            "pagetitle":getTitle(),
+                            "description":getDescription(),
+                            "published":isPublished(),
+                            "introtext":getIntrotext(),
+                            "createdon":getCreationDate(),
+                            "editedon":getEditDate(),
+                            "parent":getParent(),
+                            "content":getContent()]]
     }
 }
 //минифицированная версия документа для списка курсов(только заголовок и id)

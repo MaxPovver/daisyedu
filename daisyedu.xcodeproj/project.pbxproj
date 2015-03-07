@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		848B47DB1AAA2539001F9F53 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848B47DA1AAA2539001F9F53 /* DetailViewController.swift */; };
 		84CD49B71AA8D3C000D0FBA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD49B61AA8D3C000D0FBA5 /* AppDelegate.swift */; };
 		84CD49B91AA8D3C000D0FBA5 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD49B81AA8D3C000D0FBA5 /* MainViewController.swift */; };
 		84CD49BC1AA8D3C000D0FBA5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84CD49BA1AA8D3C000D0FBA5 /* Main.storyboard */; };
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		848B47DA1AAA2539001F9F53 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		84CD49B11AA8D3C000D0FBA5 /* daisyedu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = daisyedu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84CD49B51AA8D3C000D0FBA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84CD49B61AA8D3C000D0FBA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 			children = (
 				84CD49B61AA8D3C000D0FBA5 /* AppDelegate.swift */,
 				84CD49B81AA8D3C000D0FBA5 /* MainViewController.swift */,
+				848B47DA1AAA2539001F9F53 /* DetailViewController.swift */,
 				84CD49BA1AA8D3C000D0FBA5 /* Main.storyboard */,
 				84CD49BD1AA8D3C000D0FBA5 /* Images.xcassets */,
 				84CD49BF1AA8D3C000D0FBA5 /* LaunchScreen.xib */,
@@ -221,6 +224,7 @@
 			files = (
 				84CD49B91AA8D3C000D0FBA5 /* MainViewController.swift in Sources */,
 				84CD49D71AA8D51100D0FBA5 /* ServerConnector.swift in Sources */,
+				848B47DB1AAA2539001F9F53 /* DetailViewController.swift in Sources */,
 				84CD49EC1AA8DC5900D0FBA5 /* DataScheme.swift in Sources */,
 				84CD49B71AA8D3C000D0FBA5 /* AppDelegate.swift in Sources */,
 			);

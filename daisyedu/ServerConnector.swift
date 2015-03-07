@@ -29,7 +29,7 @@ public class Server {
             var url: NSURL = NSURL( string: encoded!)!
             var session = NSURLSession.sharedSession()
             var task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
-                println("Task completed")
+                println("Docs list loaded")
                 if((error) != nil) {
                     println(error.localizedDescription)
                 }
@@ -49,22 +49,26 @@ public class Server {
     public func load(sd:SmallDocument, real:(Document)->Void)->Document {
         var res:Document?;
        let d = NSUserDefaults.standardUserDefaults()
-        res = d.objectForKey("document\(sd.getID())") as Document?
-        if res == nil {
+        var tmp = d.objectForKey("document\(sd.getID())") as? [NSObject:AnyObject]
+        if tmp == nil {
             res = Document.stub()
+        } else {
+            res = Document(WithJSON: tmp!)
         }
         let request = self.resource + "\(sd.getID())"
         let encoded = request.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         var url: NSURL = NSURL( string: encoded!)!
         var session = NSURLSession.sharedSession()
         var task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
-            println("Task completed")
+            println("Doc loaded: "+NSString(data:data, encoding:NSUTF8StringEncoding)!)
             if((error) != nil) {
                 println(error.localizedDescription)
             }
             dispatch_async(dispatch_get_main_queue(), {
                 var x = Document(_json: NSString(data:data, encoding:NSUTF8StringEncoding)!)
-                d.setObject(x, forKey: "document\(sd.getID())")
+                /* var err: NSError?
+                var jsonStr = NSJSONSerialization.dataWithJSONObject(x, options: NSJSONWritingOptions.PrettyPrinted, error: &err)*/
+                d.setObject(x.back(), forKey: "document\(sd.getID())")
                 real(x);
             })
         })
