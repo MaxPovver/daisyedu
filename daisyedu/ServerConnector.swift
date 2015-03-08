@@ -37,12 +37,13 @@ public class Server {
             println("Docs list loaded")
             if((error) != nil) {
                 println(error.localizedDescription)
-            }
+            } else  {
             dispatch_async(dispatch_get_main_queue(), {
                 self.data = DocumentsList(RawJSON: NSString(data:data, encoding:NSUTF8StringEncoding)!)
                 self.loadedCallback()
                 })
-            NSUserDefaults.standardUserDefaults().setObject(self.data.back(), forKey: "docs_list")
+                NSUserDefaults.standardUserDefaults().setObject(self.data.back(), forKey: "docs_list")
+            }
             })
             task.resume()
     }
@@ -71,7 +72,7 @@ public class Server {
             println("Doc loaded: "+NSString(data:data, encoding:NSUTF8StringEncoding)!)
             if((error) != nil) {
                 println(error.localizedDescription)
-            }
+            } else {
             dispatch_async(dispatch_get_main_queue(), {
                 var x = Document(_json: NSString(data:data, encoding:NSUTF8StringEncoding)!)
                 /* var err: NSError?
@@ -79,6 +80,7 @@ public class Server {
                 d.setObject(x.back(), forKey: "document\(sd.getID())")
                 real(x);
             })
+            }
         })
         task.resume()
         

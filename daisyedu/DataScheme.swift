@@ -13,7 +13,7 @@ import Foundation;
 */
 //для хранения подробной инфы о документе
 public class Document {
-    public class func stub()->Document {return Document(ID: 0,Title: "Загрузка...",Content: "Загрузка...Подождите, пожалуйста")}
+    public class func stub()->Document {return Document(ID: 0,Title: "Загрузка...",Content: "Загрузка...")}
     private var _id = 0;
     private var _parent = 0;
     private var _title = "";
@@ -36,7 +36,7 @@ public class Document {
                     if let __published = json["published"] as? Bool{
                         if let __introtext = json["introtext"] as? String{
                             if let __createdon = json["createdon"] as? String{
-                                if let __editedon = json["editedon"] as? String{
+                                if json["editedon"] != nil {//или 0 или строка (!!!)
                                     if let __parent = json["parent"] as? Int {
                                         if let __content = json["content"] as? String {
                                             _id = __id
@@ -46,7 +46,11 @@ public class Document {
                                             _published = __published
                                             _introtext = __introtext
                                             _createdon = __createdon
+                                            if let __editedon = json["editedon"] as? String {
                                             _editedon = __editedon
+                                            } else if let __editedon = json["editedon"] as? Int {
+                                                _editedon = ""
+                                            }
                                             _content = __content
                                             return true;
                                         }
