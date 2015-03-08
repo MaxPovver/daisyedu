@@ -33,7 +33,7 @@
                             <outlet property="delegate" destination="r2B-On-Mie" id="JuT-C4-msD"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="s09-qd-Kez"/>
+                    <navigationItem key="navigationItem" title="Главная" id="s09-qd-Kez"/>
                     <connections>
                         <segue destination="Jn3-Sl-RXJ" kind="show" identifier="ShowDetail" id="DBx-22-WM9"/>
                     </connections>

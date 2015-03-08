@@ -127,13 +127,20 @@ public class SmallDocument {
     private var _id = 0;
     private var _title = "";
     private var _parent = 0;
+    private var _empty = false;
+    private var _deleted = false;
+    private var _publishedon = 0;
     private func initwj(json:[NSObject:AnyObject]) {
-        if json["id"]==nil || json["pagetitle"]==nil || json["parent"]==nil {
+        if json["id"]==nil || json["pagetitle"]==nil || json["parent"]==nil ||
+            json["empty"]==nil || json["deleted"]==nil || json["publishedon"]==nil {
             exit(42)
         }
         _id = json["id"] as Int
         _title = json["pagetitle"] as String
         _parent = json["parent"] as Int
+        _empty = json["empty"] as Bool
+        _deleted = json["deleted"] as Bool
+        _publishedon = json["publishedon"] as Int
     }
     public init(_json:String) {
         var err: NSError?
@@ -153,8 +160,20 @@ public class SmallDocument {
     public func getParent()->Int {
         return _parent
     }
+    public func isEmpty()->Bool {
+        return _empty
+    }
+    public func isDeleted()->Bool {
+        return _deleted
+    }
+    public func getPublishedOn()->Int {
+        return _publishedon
+    }
+    public func needed()->Bool {
+        return !isEmpty() && !isDeleted()
+    }
     public func back()->[NSObject:AnyObject] {
-        return ["id":getID(),"pagetitle":getTitle(),"parent":getParent()];
+        return ["id":getID(),"pagetitle":getTitle(),"parent":getParent(),"empty":isEmpty(),"deleted":isDeleted(),"publishedon":getPublishedOn()];
     }
 }
 
@@ -177,9 +196,9 @@ public class DocumentsList {
             
             if let results = json["results"] as? [NSDictionary]{
                 docs = results.map({SmallDocument(WithJSON: $0 as NSDictionary)})//лямбда-магия)
-                tree = DocTree(root: SmallDocument(WithJSON: ["id":0,"parent":0,"pagetitle":"Меню"]));
+                tree = DocTree(root: SmallDocument(WithJSON: ["id":0,"parent":0,"pagetitle":"Меню","empty":true,"deleted":false,"publishedon":0]));
                 tree.addRange(docs)
-                tree.print()
+               // tree.print()
                 return;
             }
         }
@@ -192,7 +211,7 @@ public class DocumentsList {
             
             if let results = json["results"] as? [NSDictionary]{
                 docs = results.map({SmallDocument(WithJSON: $0 as NSDictionary)})//и еще лямбда магия
-                tree = DocTree(root: SmallDocument(WithJSON: ["id":0,"parent":0,"pagetitle":"Меню"]));
+                tree = DocTree(root: SmallDocument(WithJSON: ["id":0,"parent":0,"pagetitle":"Меню","empty":true,"deleted":false,"publishedon":0]));
                 tree.addRange(docs)
                 return;
             }
@@ -207,6 +226,9 @@ public class DocumentsList {
         let x  = docs[_i]
         return x
     }
+    public func getTree()->DocTree {
+        return tree
+    }
     public func asCollection()->[SmallDocument] {
         return docs
     }
@@ -216,37 +238,54 @@ public class DocumentsList {
 }
 
 public class TreeNode {
-    public var parentid = 0;
+    public var parent : TreeNode?;
     public var value = SmallDocument();
     public var children = [TreeNode]();
-    public init(parentid:Int, value: SmallDocument, children: [TreeNode]) {
-        self.parentid = parentid
+    public init(parent:TreeNode?, value: SmallDocument, children: [TreeNode]) {
+        self.parent = parent
         self.value = value
         self.children = children
     }
+    public func pathTo()->String {
+        var path = "", join = " > "
+        var current:TreeNode? = self
+        path = current!.value.getTitle()
+        current = current?.parent
+        while(current != nil && current!.value.getID() != 2) {
+            path = current!.value.getTitle() + join + path
+            current = current!.parent
+        }
+        return path
+    }
 }
 
-class DocTree {
+public class DocTree {
     var tree: TreeNode;
     init(root:SmallDocument) {
-        tree  = TreeNode(parentid: 0, value: root, children: [])
+        tree  = TreeNode(parent: nil, value: root, children: [])
     }
     func add(t:SmallDocument)->Bool {
         return add(t,current: tree)
     }
-    func print() {
-        println("\( tree.value.getID())"+tree.value.getTitle())
-        var prev = tree.value.getTitle()+" ---> "
-        for(val) in tree.children {
-            println( prev+val.value.getTitle())
+ /*   func print() {
+    dispatch_async(dispatch_get_main_queue(), {
+        //0  уровень
+        println(self.tree.value.getTitle())
+        var prev = self.tree.value.getTitle()+" ---> "
+        //1 уровень
+        for(val) in self.tree.children/*.filter({!$0.children.isEmpty})*/ {
+            var s = prev+val.value.getTitle()
+            println( s )
         }
-        for (val1) in tree.children {
+        //2 уровень
+        for (val1) in self.tree.children {
             var prev2 = prev+val1.value.getTitle() + " ---> "
             for (val2) in val1.children {
                 println( prev2+val2.value.getTitle())
             }
         }
-        for (val1) in tree.children {
+        //3 уровень
+        for (val1) in self.tree.children {
             var prev2 = prev+val1.value.getTitle() + " ---> "
             for (val2) in val1.children {
                 var prev3 = prev2+val2.value.getTitle() + " ---> "
@@ -255,7 +294,8 @@ class DocTree {
                 }
             }
         }
-    }
+        })
+    } */
     func addRange(var ts:[SmallDocument]) {
         while !ts.isEmpty {
             var remove = [Int]()
@@ -280,10 +320,51 @@ class DocTree {
                 }
             }
         } else {
-            current.children.append(TreeNode(parentid: t.getParent(), value: t, children: []))
+            if(current.children.filter({$0.value.getID()==t.getID()}).isEmpty) {
+            current.children.append(TreeNode(parent: current, value: t, children: []))
+            }
             return true
         }
         return false
+    }
+    
+    func getLayer(lvl:Int)->[TreeNode] {
+        return getLayer(lvl, filterID: -1)
+    }
+    func getLayer(level:Int,filterID:Int)->[TreeNode] {
+        if level==1 {
+            return tree.children.filter({!$0.children.isEmpty})
+        }
+        var result = [TreeNode]()
+        if level==2 {
+            for (val) in tree.children.filter({!$0.children.isEmpty}) {
+                if filterID > 0 {
+                    if val.value.getID() == filterID {
+                        return val.children.filter({$0.value.needed()})
+                    }
+                } else {
+                    result += val.children
+                }
+            }
+            return result.filter({$0.value.needed()});
+        }
+        return []
+    }
+    func weNeedToGoDeeper(current:[TreeNode],var already:[TreeNode],left:Int)->[TreeNode] {
+        if(left>0) {
+        var tmp = [TreeNode]()
+        for(val) in current {
+            tmp += val.children
+        }
+            already += tmp
+            println("\(already.count) \(tmp.count)")
+            return weNeedToGoDeeper(tmp, already: already, left: left-1)
+        } else { return already }
+    }
+    func getAll3Plus()->[TreeNode] {
+        var x = weNeedToGoDeeper(tree.children.filter({$0.value.getID()==2}), already: [TreeNode](), left: 5).filter({$0.value.needed()})
+        println(x.count)
+        return x
     }
 
 }

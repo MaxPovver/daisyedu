@@ -49,6 +49,9 @@ public class Server {
     public func getDocs()->DocumentsList {
         return data
     }
+    public func getTree()->DocTree {
+        return getDocs().getTree()
+    }
     //получает из сети полную инфу по конкретному доку
     //сразу возвращает из кеша(если есть), либо заглушку
     public func load(sd:SmallDocument, real:(Document)->Void)->Document {

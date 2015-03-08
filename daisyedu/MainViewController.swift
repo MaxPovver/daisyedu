@@ -30,20 +30,45 @@ class MainViewController: UITableViewController {
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("DocCell") as UITableViewCell
-        cell.textLabel.text = "\(server.getDocs().at(indexPath.item).getTitle())  \(indexPath.item)"
+        let first = server.getTree().getLayer(1)
+        if first[indexPath.section].value.getID() != 2 {
+        let layer = server.getTree().getLayer(2, filterID: first[indexPath.section].value.getID());
+            cell.textLabel.text = layer[indexPath.row].value.getTitle()
+        } else {
+            let layer = server.getTree().getAll3Plus()
+            cell.textLabel.text = layer[indexPath.row].value.getTitle()
+        }
+        
         return cell
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("ShowDetail", sender: indexPath.item)
+        performSegueWithIdentifier("ShowDetail", sender: indexPath)
     }
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return server.getDocs().count()
+        let tmp = server.getTree().getLayer(1)[section];
+        if tmp.value.getID() != 2 { return tmp.children.count }
+        return server.getTree().getAll3Plus().count
+    }
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return server.getTree().getLayer(1).count
+    }
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var x = server.getTree().getLayer(1)[section];//.value.getTitle()
+        if x.value.getID() != 2 { return x.value.getTitle() }
+        else { return "Курсы и тренинги" }
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let item = server.getDocs().at(sender as Int)
-    let d =  segue.destinationViewController as DetailViewController
-        let tmp = server.load(item, real: d.recieve)
+        let p = sender as NSIndexPath
+        let x = server.getTree().getLayer(1)[p.section];
+        var item:TreeNode
+        if x.value.getID() != 2 { item = x.children[p.row] }
+        else {
+            item = server.getTree().getAll3Plus()[p.row]
+        }
+        let d =  segue.destinationViewController as DetailViewController
+        let tmp = server.load(item.value, real: d.recieve)
         d.setDoc(tmp)
+        d.setNode(item)
     }
 
 }
