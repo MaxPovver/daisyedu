@@ -13,14 +13,15 @@ class MainViewController: UITableViewController {
     required init(coder aDecoder: NSCoder) {
         server = Server()
         super.init(coder: aDecoder)
-        server = Server(dataLoaded)
+        
     }
     var server:Server;
-    //вызывается после получения сервером очередной порции данных
+    //вызывается после получения от сервера очередной порции данных
     func dataLoaded() {
-        tableView.reloadData()
+         tableView.reloadData()
     }
     override func viewDidLoad() {
+        server = Server(dataLoaded)
         super.viewDidLoad()        
     }
     

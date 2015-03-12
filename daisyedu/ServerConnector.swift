@@ -13,7 +13,7 @@ public class Server {
     let resources = "http://daisyedu.com/rest/resource";
     let resource = "http://daisyedu.com/rest/resource&id=";
     var data = DocumentsList();
-    var useCache=false;
+    var useCache = true;
     public var Bad = false;
     var loadedCallback:()->Void;
     public init()
@@ -27,7 +27,7 @@ public class Server {
         if useCache {
             if let tmp = NSUserDefaults.standardUserDefaults().objectForKey("docs_list") as? [NSObject:AnyObject] {
                 self.data = DocumentsList(json: tmp)
-                loadedCallback()
+                lbc()
             }
         }
         let encoded = request.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
