@@ -34,10 +34,10 @@ class MainViewController: UITableViewController {
         let first = server.getTree().getLayer(1)
         if first[indexPath.section].value.getID() != 2 {
         let layer = server.getTree().getLayer(2, filterID: first[indexPath.section].value.getID());
-            cell.textLabel.text = layer[indexPath.row].value.getTitle()
+            cell.textLabel?.text = layer[indexPath.row].value.getTitle()
         } else {
             let layer = server.getTree().getAll3Plus()
-            cell.textLabel.text = layer[indexPath.row].value.getTitle()
+            cell.textLabel?.text = layer[indexPath.row].value.getTitle()
         }
         
         return cell
