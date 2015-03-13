@@ -240,7 +240,6 @@ public class DocumentsList {
         return ["total":docs.count,"results":docs.map({$0.back()})]//немного лямбда магии :))
     }
 }
-
 public class TreeNode {
     public var parent : TreeNode?;
     public var value = SmallDocument();
@@ -271,35 +270,6 @@ public class DocTree {
     func add(t:SmallDocument)->Bool {
         return add(t,current: tree)
     }
- /*   func print() {
-    dispatch_async(dispatch_get_main_queue(), {
-        //0  уровень
-        println(self.tree.value.getTitle())
-        var prev = self.tree.value.getTitle()+" ---> "
-        //1 уровень
-        for(val) in self.tree.children/*.filter({!$0.children.isEmpty})*/ {
-            var s = prev+val.value.getTitle()
-            println( s )
-        }
-        //2 уровень
-        for (val1) in self.tree.children {
-            var prev2 = prev+val1.value.getTitle() + " ---> "
-            for (val2) in val1.children {
-                println( prev2+val2.value.getTitle())
-            }
-        }
-        //3 уровень
-        for (val1) in self.tree.children {
-            var prev2 = prev+val1.value.getTitle() + " ---> "
-            for (val2) in val1.children {
-                var prev3 = prev2+val2.value.getTitle() + " ---> "
-                for (val3) in val2.children {
-                    println( prev3+val3.value.getTitle())
-                }
-            }
-        }
-        })
-    } */
     func addRange(var ts:[SmallDocument]) {
         while !ts.isEmpty {
             var remove = [Int]()
@@ -331,26 +301,37 @@ public class DocTree {
         }
         return false
     }
-    
+    private var layerCache:[Int:[TreeNode]] = [Int:[TreeNode]]();
+    private var filteredLayerCache:[Int:[Int:[TreeNode]]] = [Int:[Int:[TreeNode]]]();
     func getLayer(lvl:Int)->[TreeNode] {
         return getLayer(lvl, filterID: -1)
     }
     func getLayer(level:Int,filterID:Int)->[TreeNode] {
         if level==1 {
-            return tree.children.filter({!$0.children.isEmpty})
-        }
-        var result = [TreeNode]()
-        if level==2 {
-            for (val) in tree.children.filter({!$0.children.isEmpty}) {
-                if filterID > 0 {
-                    if val.value.getID() == filterID {
-                        return val.children.filter({$0.value.needed()})
-                    }
-                } else {
-                    result += val.children
-                }
+            if layerCache.indexForKey(1) == nil {
+                layerCache[1] = tree.children.filter({!$0.children.isEmpty})
             }
-            return result.filter({$0.value.needed()});
+            return layerCache[1]!
+        }
+        if level==2 {
+            if (filterID <= 0) {
+                    if layerCache.indexForKey(2) == nil {
+                        var tmp =  tree.children.filter({!$0.children.isEmpty})
+                        var res:[TreeNode] = []
+                        for (v) in tmp {
+                            res += v.children
+                        }
+                        layerCache[2] = res
+                    }
+                    return layerCache[2]!
+                }  else if filteredLayerCache[2]?.indexForKey(filterID) == nil {
+                            var tmp = [TreeNode]()
+                            for (val) in tree.children.filter({!$0.children.isEmpty}) {
+                                if val.value.getID() == filterID {
+                                    filteredLayerCache[2] = [filterID : val.children.filter({$0.value.needed()})] }
+                        }
+            }
+            return filteredLayerCache[2]![filterID]!
         }
         return []
     }
@@ -365,10 +346,18 @@ public class DocTree {
             return weNeedToGoDeeper(tmp, already: already, left: left-1)
         } else { return already }
     }
+     var getAll3PlusCache:[TreeNode]=[TreeNode]()
     func getAll3Plus()->[TreeNode] {
-        var x = weNeedToGoDeeper(tree.children.filter({$0.value.getID()==2}), already: [TreeNode](), left: 5).filter({$0.value.needed()})
-        println(x.count)
-        return x
+        if (getAll3PlusCache.isEmpty)
+        { getAll3PlusCache = weNeedToGoDeeper(tree.children.filter({$0.value.getID()==2}), already: [TreeNode](), left: 5).filter({$0.value.needed()})
+        }
+        return getAll3PlusCache
+    }
+    //удаляет все кешированные данные
+     func DropCaches() {
+        getAll3PlusCache.removeAll(keepCapacity: true)
+        layerCache.removeAll(keepCapacity: true)
+        filteredLayerCache.removeAll(keepCapacity: true)
     }
 
 }
