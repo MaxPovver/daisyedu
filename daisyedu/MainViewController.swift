@@ -33,12 +33,8 @@ class MainViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("DocCell") as UITableViewCell
         let first = server.getTree().getLayer(1)
         if first[indexPath.section].value.getID() != 2 {
-        let layer = server.getTree().getLayer(2, filterID: first[indexPath.section].value.getID());
-            if(layer.count > indexPath.row) {
-                cell.textLabel?.text = layer[indexPath.row].value.getTitle()
-            } else {
-                cell.textLabel?.text = "Error \(indexPath.row)"
-            }
+            let layer = server.getTree().getLayer(2, filterID: first[indexPath.section].value.getID());
+            cell.textLabel?.text = layer[indexPath.row].value.getTitle()
         } else {
             let layer = server.getTree().getAll3Plus()
             cell.textLabel?.text = layer[indexPath.row].value.getTitle()
@@ -51,7 +47,9 @@ class MainViewController: UITableViewController {
     }
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let tmp = server.getTree().getLayer(1)[section];
-        if tmp.value.getID() != 2 { return tmp.children.count }
+        if tmp.value.getID() != 2 {
+            return server.getTree().getLayer(2, filterID: tmp.value.getID()).count
+        }
         return server.getTree().getAll3Plus().count
     }
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -66,7 +64,9 @@ class MainViewController: UITableViewController {
         let p = sender as NSIndexPath
         let x = server.getTree().getLayer(1)[p.section];
         var item:TreeNode
-        if x.value.getID() != 2 { item = x.children[p.row] }
+        if x.value.getID() != 2 {
+            item = server.getTree().getLayer(2, filterID: x.value.getID())[p.row]
+        }
         else {
             item = server.getTree().getAll3Plus()[p.row]
         }

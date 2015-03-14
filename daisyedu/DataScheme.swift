@@ -179,6 +179,11 @@ public class SmallDocument {
     public func back()->[NSObject:AnyObject] {
         return ["id":getID(),"pagetitle":getTitle(),"parent":getParent(),"empty":isEmpty(),"deleted":isDeleted(),"publishedon":getPublishedOn()];
     }
+    public func asJSONStr()->String {
+        var tmp = back();
+        var data = NSJSONSerialization.dataWithJSONObject(tmp, options: NSJSONWritingOptions.PrettyPrinted, error: nil)
+        return NSString(data: data!,encoding:NSUTF8StringEncoding)!
+    }
 }
 
 //для хранения списка статей(без текста?)
@@ -260,6 +265,11 @@ public class TreeNode {
         }
         return path
     }
+    public func toString()->String {
+        var l = children.map({"\($0.value.getID())"})
+        var s = ", ".join(l);
+        return "{\"value\":\(value.asJSONStr()),\"children\":[\(s)]}"
+    }
 }
 
 public class DocTree {
@@ -314,6 +324,9 @@ public class DocTree {
             return layerCache[1]!
         }
         if level==2 {
+            if filteredLayerCache[2]==nil {
+                filteredLayerCache[2] = [Int:[TreeNode]]()
+            }
             if (filterID <= 0) {
                     if layerCache.indexForKey(2) == nil {
                         var tmp =  tree.children.filter({!$0.children.isEmpty})
@@ -321,14 +334,16 @@ public class DocTree {
                         for (v) in tmp {
                             res += v.children
                         }
-                        layerCache[2] = res
+                        layerCache[2] = res.filter({$0.value.needed()})
                     }
                     return layerCache[2]!
                 }  else if filteredLayerCache[2]?.indexForKey(filterID) == nil {
                             var tmp = [TreeNode]()
                             for (val) in tree.children.filter({!$0.children.isEmpty}) {
                                 if val.value.getID() == filterID {
-                                    filteredLayerCache[2] = [filterID : val.children.filter({$0.value.needed()})] }
+                                    filteredLayerCache[2]![filterID] = val.children.filter({$0.value.needed()})
+                                    return filteredLayerCache[2]![filterID]!
+                                }
                         }
             }
             return filteredLayerCache[2]![filterID]!
@@ -359,12 +374,22 @@ public class DocTree {
         layerCache.removeAll(keepCapacity: true)
         filteredLayerCache.removeAll(keepCapacity: true)
     }
-
+    func toString() {
+        
+    }
 }
 
 
 
-
+func print(var n:[TreeNode]) {
+    print("{")
+    if(n.count>0) {
+        var tmp = n.map({"\($0.toString())"})
+        print(", ".join(tmp))
+    }
+    print("}")
+}
+    
 
 
 
