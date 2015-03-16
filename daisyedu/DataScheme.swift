@@ -25,9 +25,9 @@ public class Document {
     private var _editedon = "";
     /**********************************/
     private var _image = Optional("")
-    private var _coach = Optional(0)
-    private var _price = Optional(0)
-    private var _format = Optional(0)
+    private var _coach = Optional("")
+    private var _price = Optional("")
+    private var _format = Optional("")
     /**********************************/
     public init(_json:String) {
         var err: NSError?
@@ -67,12 +67,9 @@ public class Document {
                                             _content = __content
                                             /*****************************************/
                                             _image = json["image"] as? String
-                                            _coach = json["coach"] as? Int
-                                            if _coach<0 { _coach = nil }
-                                            _price = json["price"] as? Int
-                                            if _price<0 { _price = nil }
-                                            _format = json["format"] as? Int
-                                            if _format<0 { _format = nil }
+                                            _coach = json["coach"] as? String
+                                            _price = json["price"] as? String
+                                            _format = json["format"] as? String
                                             /*****************************************/
                                             return true;
                                         }
@@ -145,13 +142,13 @@ public class Document {
     public func getImage()->String? {
         return _image
     }
-    public func getCoach()->Int? {
+    public func getCoach()->String? {
         return _coach
     }
-    public func getPrice()->Int? {
+    public func getPrice()->String? {
         return _price
     }
-    public func getFormat()->Int? {
+    public func getFormat()->String? {
         return _format
     }
     /**************************************/
@@ -169,9 +166,9 @@ public class Document {
                             "parent":getParent(),
                             "content":getContent(),
                             "image":getImage() ?? "",
-                            "coach":getCoach() ?? -1,
-                            "price":getPrice() ?? -1,
-                            "format":getFormat() ?? -1]]
+                            "coach":getCoach() ?? "",
+                            "price":getPrice() ?? "",
+                            "format":getFormat() ?? ""]]
     }
 }
 //минифицированная версия документа для списка курсов(только заголовок и id)
@@ -185,9 +182,9 @@ public class SmallDocument {
     private var _publishedon = 0;
     /**********************************/
     private var _image = Optional("")
-    private var _coach = Optional(0)
-    private var _price = Optional(0)
-    private var _format = Optional(0)
+    private var _coach = Optional("")
+    private var _price = Optional("")
+    private var _format = Optional("")
     /**********************************/
     private func initwj(json:[NSObject:AnyObject]) {
         if json["id"]==nil || json["pagetitle"]==nil || json["parent"]==nil
@@ -201,9 +198,9 @@ public class SmallDocument {
         _publishedon = json["publishedon"] as Int
         /*****************************************/
         _image = json["image"] as? String
-        _coach = json["coach"] as? Int
-        _price = json["price"] as? Int
-        _format = json["format"] as? Int
+        _coach = json["coach"] as? String
+        _price = json["price"] as? String
+        _format = json["format"] as? String
         /*****************************************/
     }
     public init(_json:String) {
@@ -240,13 +237,13 @@ public class SmallDocument {
     public func getImage()->String? {
         return _image
     }
-    public func getCoach()->Int? {
+    public func getCoach()->String? {
         return _coach
     }
-    public func getPrice()->Int? {
+    public func getPrice()->String? {
         return _price
     }
-    public func getFormat()->Int? {
+    public func getFormat()->String? {
         return _format
     }
     /**************************************/

@@ -86,6 +86,17 @@ public class Server {
         
         return res!;
     }
+    public func CoachToStr(id:String)->String {
+        let _id = 0 //TODO: конвертировать
+        return getDocs().asCollection().filter({$0.getID()==_id})[0].getTitle()
+    }
+    public func FormatToStr(id:String)->String {
+        switch (id) {
+        case "1": return "";
+        case "2": return "";
+        default: return "";
+        }
+    }
 }
 
 //в фоновом потоке работает, изредка дергает основной по событиям
