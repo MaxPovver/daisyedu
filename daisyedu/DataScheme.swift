@@ -127,6 +127,7 @@ public class Document {
     }
 }
 //минифицированная версия документа для списка курсов(только заголовок и id)
+//TODO: добавить поля для "image":"images/GTsTHmkTe0k.jpg","coach":"71","price":"2100","format":"1"
 public class SmallDocument {
     private var _id = 0;
     private var _title = "";
@@ -134,17 +135,27 @@ public class SmallDocument {
     private var _empty = false;
     private var _deleted = false;
     private var _publishedon = 0;
+    /**********************************/
+    private var _image = ""
+    private var _coach = Optional(0)
+    private var _price = Optional(0)
+    private var _format = Optional(0)
+    /**********************************/
     private func initwj(json:[NSObject:AnyObject]) {
-        if json["id"]==nil || json["pagetitle"]==nil || json["parent"]==nil ||
-            json["empty"]==nil || json["deleted"]==nil || json["publishedon"]==nil {
-            exit(42)
-        }
+        if json["id"]==nil || json["pagetitle"]==nil || json["parent"]==nil
+            {exit(42);}
+        if json["empty"]==nil || json["deleted"]==nil || json["publishedon"]==nil  { exit(42) }
         _id = json["id"] as Int
         _title = json["pagetitle"] as String
         _parent = json["parent"] as Int
         _empty = json["empty"] as Bool
         _deleted = json["deleted"] as Bool
         _publishedon = json["publishedon"] as Int
+        /*****************************************/
+        _image = json["image"] as? String ?? ""
+        _coach = json["coach"] as? Int
+        _price = json["price"] as? Int
+        _format = json["format"] as? Int
     }
     public init(_json:String) {
         var err: NSError?
@@ -176,8 +187,25 @@ public class SmallDocument {
     public func needed()->Bool {
         return !isEmpty() && !isDeleted()
     }
+    /*************************************/
+    public func getImage()->String {
+        return _image
+    }
+    public func getCoach()->Int? {
+        return _coach
+    }
+    public func getPrice()->Int? {
+        return _price
+    }
+    public func getFormat()->Int? {
+        return _format
+    }
+    /**************************************/
     public func back()->[NSObject:AnyObject] {
-        return ["id":getID(),"pagetitle":getTitle(),"parent":getParent(),"empty":isEmpty(),"deleted":isDeleted(),"publishedon":getPublishedOn()];
+        return ["id":getID(),"pagetitle":getTitle(),"parent":getParent(),"empty":isEmpty(),"deleted":isDeleted(),"publishedon":getPublishedOn(),"image":getImage(),"coach":getCoach() ?? "","price":getPrice() ?? "","format":getFormat() ?? ""];
+        /// optinal ?? someval
+        // optional != nil => (optional ?? someval) <=> optional
+        // optinal ==nil => (optinal ?? someval) <=> someval
     }
     public func asJSONStr()->String {
         var tmp = back();
