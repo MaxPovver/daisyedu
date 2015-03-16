@@ -23,10 +23,27 @@ public class Document {
     private var _introtext = "";
     private var _createdon = "";
     private var _editedon = "";
+    /**********************************/
+    private var _image = Optional("")
+    private var _coach = Optional(0)
+    private var _price = Optional(0)
+    private var _format = Optional(0)
+    /**********************************/
     public init(_json:String) {
         var err: NSError?
         var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
         if !initwj(json) { exit(42); }
+    }
+    public init(_json:String, sd:SmallDocument) {
+        var err: NSError?
+        var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
+        if !initwj(json) { exit(42); }
+        /*********************************************/
+        if getImage() == nil { _image = sd.getImage() }
+        if getCoach() == nil { _coach = sd.getCoach() }
+        if getPrice() == nil { _price = sd.getPrice() }
+        if getFormat() == nil { _format = sd.getFormat() }
+        /**********************************************/
     }
     private func initwj(_json:[NSObject:AnyObject])->Bool {
         let json = _json["object"] as NSDictionary
@@ -46,12 +63,17 @@ public class Document {
                                             _published = __published
                                             _introtext = __introtext
                                             _createdon = __createdon
-                                            if let __editedon = json["editedon"] as? String {
-                                            _editedon = __editedon
-                                            } else if let __editedon = json["editedon"] as? Int {
-                                                _editedon = ""
-                                            }
+                                            _editedon = json["editedon"] as? String ?? ""
                                             _content = __content
+                                            /*****************************************/
+                                            _image = json["image"] as? String
+                                            _coach = json["coach"] as? Int
+                                            if _coach<0 { _coach = nil }
+                                            _price = json["price"] as? Int
+                                            if _price<0 { _price = nil }
+                                            _format = json["format"] as? Int
+                                            if _format<0 { _format = nil }
+                                            /*****************************************/
                                             return true;
                                         }
                                     }
@@ -97,7 +119,15 @@ public class Document {
         return _title
     }
     public func getContent()->String {
-        return _content
+        var res = _content
+        if getImage() != nil
+        {
+            res =  "<img src=\"\(getImage()!)\" width=\"100%\">" + res
+        }
+        if getPrice() != nil {
+            res = res + "<br><span>Цена: \(getPrice()!) Р.</span>"
+        }
+        return res
     }
     public func getIntrotext()->String {
         return _introtext
@@ -111,7 +141,21 @@ public class Document {
     public func getEditDate()->String {
         return _editedon
     }
-    //конвертирует докумен обратно в json объект(для кеширования)
+    /*************************************/
+    public func getImage()->String? {
+        return _image
+    }
+    public func getCoach()->Int? {
+        return _coach
+    }
+    public func getPrice()->Int? {
+        return _price
+    }
+    public func getFormat()->Int? {
+        return _format
+    }
+    /**************************************/
+    //конвертирует документ обратно в json объект(для кеширования)
     public func back()->[String:AnyObject] {
         return ["object":[
                             "id":getID(),
@@ -123,7 +167,11 @@ public class Document {
                             "createdon":getCreationDate(),
                             "editedon":getEditDate(),
                             "parent":getParent(),
-                            "content":getContent()]]
+                            "content":getContent(),
+                            "image":getImage() ?? "",
+                            "coach":getCoach() ?? -1,
+                            "price":getPrice() ?? -1,
+                            "format":getFormat() ?? -1]]
     }
 }
 //минифицированная версия документа для списка курсов(только заголовок и id)
@@ -136,7 +184,7 @@ public class SmallDocument {
     private var _deleted = false;
     private var _publishedon = 0;
     /**********************************/
-    private var _image = ""
+    private var _image = Optional("")
     private var _coach = Optional(0)
     private var _price = Optional(0)
     private var _format = Optional(0)
@@ -152,10 +200,11 @@ public class SmallDocument {
         _deleted = json["deleted"] as Bool
         _publishedon = json["publishedon"] as Int
         /*****************************************/
-        _image = json["image"] as? String ?? ""
+        _image = json["image"] as? String
         _coach = json["coach"] as? Int
         _price = json["price"] as? Int
         _format = json["format"] as? Int
+        /*****************************************/
     }
     public init(_json:String) {
         var err: NSError?
@@ -188,7 +237,7 @@ public class SmallDocument {
         return !isEmpty() && !isDeleted()
     }
     /*************************************/
-    public func getImage()->String {
+    public func getImage()->String? {
         return _image
     }
     public func getCoach()->Int? {
@@ -202,10 +251,10 @@ public class SmallDocument {
     }
     /**************************************/
     public func back()->[NSObject:AnyObject] {
-        return ["id":getID(),"pagetitle":getTitle(),"parent":getParent(),"empty":isEmpty(),"deleted":isDeleted(),"publishedon":getPublishedOn(),"image":getImage(),"coach":getCoach() ?? "","price":getPrice() ?? "","format":getFormat() ?? ""];
+        return ["id":getID(),"pagetitle":getTitle(),"parent":getParent(),"empty":isEmpty(),"deleted":isDeleted(),"publishedon":getPublishedOn(),"image":getImage() ?? "","coach":getCoach() ?? "","price":getPrice() ?? "","format":getFormat() ?? ""];
         /// optinal ?? someval
         // optional != nil => (optional ?? someval) <=> optional
-        // optinal ==nil => (optinal ?? someval) <=> someval
+        // optinal == nil => (optinal ?? someval) <=> someval
     }
     public func asJSONStr()->String {
         var tmp = back();

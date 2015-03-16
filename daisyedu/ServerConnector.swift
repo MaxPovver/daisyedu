@@ -74,7 +74,7 @@ public class Server {
                 println(error.localizedDescription)
             } else {
             dispatch_async(dispatch_get_main_queue(), {
-                var x = Document(_json: NSString(data:data, encoding:NSUTF8StringEncoding)!)
+                var x = Document(_json: NSString(data:data, encoding:NSUTF8StringEncoding)!,sd: sd)
                 /* var err: NSError?
                 var jsonStr = NSJSONSerialization.dataWithJSONObject(x, options: NSJSONWritingOptions.PrettyPrinted, error: &err)*/
                 d.setObject(x.back(), forKey: "document\(sd.getID())")
