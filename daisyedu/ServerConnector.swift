@@ -7,6 +7,7 @@
 //
 import Foundation;
 
+var s:Server=Server();
 
 //вся работа с серверным апи идет через него
 public class Server {
@@ -29,6 +30,7 @@ public class Server {
                 self.data = DocumentsList(json: tmp)
                 lbc()
             }
+        s = self
         }
         let encoded = request.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         var url: NSURL = NSURL( string: encoded!)!
@@ -87,13 +89,13 @@ public class Server {
         return res!;
     }
     public func CoachToStr(id:String)->String {
-        let _id = 0 //TODO: конвертировать
+        let _id = id.toInt()! 
         return getDocs().asCollection().filter({$0.getID()==_id})[0].getTitle()
     }
     public func FormatToStr(id:String)->String {
         switch (id) {
-        case "1": return "";
-        case "2": return "";
+        case "1": return "Онлайн";
+        case "2": return "Оффлайн";
         default: return "";
         }
     }

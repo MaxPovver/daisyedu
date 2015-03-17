@@ -11,8 +11,10 @@ import Foundation;
 /*  json example
 {"message":"","object":{"id":1,"type":"document","contentType":"text\/html","pagetitle":"\u0413\u043b\u0430\u0432\u043d\u0430\u044f","longtitle":"","description":"","alias":"home","link_attributes":"","published":true,"pub_date":0,"unpub_date":0,"parent":0,"isfolder":true,"introtext":"","content":"","richtext":true,"template":1,"menuindex":0,"searchable":true,"cacheable":true,"createdby":1,"createdon":"2015-01-21 14:00:46","editedby":1,"editedon":"2015-01-21 20:58:24","deleted":false,"deletedon":0,"deletedby":0,"publishedon":0,"publishedby":0,"menutitle":"","donthit":false,"privateweb":false,"privatemgr":false,"content_dispo":0,"hidemenu":false,"class_key":"modDocument","context_key":"web","content_type":1,"uri":"home","uri_override":0,"hide_children_in_tree":0,"show_in_tree":1,"properties":null},"success":true}
 */
+
 //для хранения подробной инфы о документе
 public class Document {
+    
     public class func stub()->Document {return Document(ID: 0,Title: "Загрузка...",Content: "Загрузка...")}
     private var _id = 0;
     private var _parent = 0;
@@ -121,9 +123,16 @@ public class Document {
         {
             res =  "<img src=\"\(getImage()!)\" width=\"100%\">" + res
         }
+        if getCoach() != nil {
+            res = res + "<br><span>Автор:</span> <a href=\"http://coaches/\(getCoach()!)\"><span>\(s.CoachToStr(getCoach()!)) </span></a>"
+        }
+        if getFormat() != nil {
+            res = res + "<br><span>Формат: \(s.FormatToStr(getFormat()!))</span>"
+        }
         if getPrice() != nil {
             res = res + "<br><span>Цена: \(getPrice()!) Р.</span>"
         }
+
         return res
     }
     public func getIntrotext()->String {

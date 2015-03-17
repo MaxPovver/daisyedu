@@ -7,21 +7,22 @@
 //
 import UIKit
 
- class DetailViewController: UIViewController {
+public class DetailViewController: UIViewController,UIWebViewDelegate {
     
     @IBOutlet weak var Content: UIWebView!
-    required init(coder aDecoder: NSCoder) {
+    
+    required public init(coder aDecoder: NSCoder) {
         doc = Document.stub()
         super.init(coder: aDecoder)
     }
     var doc:Document;
     var node:TreeNode?
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         recieve(doc)
     }
     
-    override func didReceiveMemoryWarning() {
+    override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
@@ -29,9 +30,12 @@ import UIKit
     func setNode(t:TreeNode) { node = t}
     func recieve(document:Document) {
         doc = document
-       // Title.text = doc.getTitle()
         navigationItem.title = doc.getTitle()
         navigationItem.prompt = node?.pathTo()
         Content.loadHTMLString(doc.getContent(), baseURL: NSURL(string: "http://daisyedu.com/"))
+    }
+    
+    public func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        return false
     }
 }
