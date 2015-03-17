@@ -123,16 +123,17 @@ public class Document {
         {
             res =  "<img src=\"\(getImage()!)\" width=\"100%\">" + res
         }
-        if getCoach() != nil {
-            res = res + "<br><span>Автор:</span> <a href=\"http://coaches/\(getCoach()!)\"><span>\(s.CoachToStr(getCoach()!)) </span></a>"
+        if getCoach() != nil  && getPrice() != nil && !getPrice()!.isEmpty{
+            if getCoach() != nil {
+                res = res + "<br><span>Автор:</span> <a href=\"http://coaches/\(getCoach()!)\"><span>\(s.CoachToStr(getCoach()!)) </span></a>"
+            }
+            if getFormat() != nil {
+                res = res + "<br><span>Формат: \(s.FormatToStr(getFormat()!))</span>"
+            }
+            if getPrice() != nil {
+                res = res + "<br><span>Цена: \(getPrice()!) Р.</span>"
+            }
         }
-        if getFormat() != nil {
-            res = res + "<br><span>Формат: \(s.FormatToStr(getFormat()!))</span>"
-        }
-        if getPrice() != nil {
-            res = res + "<br><span>Цена: \(getPrice()!) Р.</span>"
-        }
-
         return res
     }
     public func getIntrotext()->String {
@@ -450,6 +451,19 @@ public class DocTree {
         { getAll3PlusCache = weNeedToGoDeeper(tree.children.filter({$0.value.getID()==2}), already: [TreeNode](), left: 5).filter({$0.value.needed()})
         }
         return getAll3PlusCache
+    }
+    func getForID(id:Int)->TreeNode? {
+        for (v) in getLayer(2) {
+            if v.value.getID() == id {
+                return v
+            }
+        }
+        for (v) in getAll3Plus() {
+            if v.value.getID() == id {
+                return v
+            }
+        }
+        return nil
     }
     //удаляет все кешированные данные
      func DropCaches() {

@@ -89,7 +89,8 @@ public class Server {
         return res!;
     }
     public func CoachToStr(id:String)->String {
-        let _id = id.toInt()! 
+        println("id = \(id)")
+        let _id = id.toInt() ?? 1
         return getDocs().asCollection().filter({$0.getID()==_id})[0].getTitle()
     }
     public func FormatToStr(id:String)->String {

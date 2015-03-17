@@ -62,18 +62,23 @@ class MainViewController: UITableViewController {
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let p = sender as NSIndexPath
-        let x = server.getTree().getLayer(1)[p.section];
-        var item:TreeNode
-        if x.value.getID() != 2 {
-            item = server.getTree().getLayer(2, filterID: x.value.getID())[p.row]
+        var item:TreeNode?
+        if p.section != -1 {
+            let x = server.getTree().getLayer(1)[p.section];
+            if x.value.getID() != 2 {
+                item = server.getTree().getLayer(2, filterID: x.value.getID())[p.row]
+            } else {
+                item = server.getTree().getAll3Plus()[p.row]
+                }
+        } else {
+            item = server.getTree().getForID(p.item)
         }
-        else {
-            item = server.getTree().getAll3Plus()[p.row]
+        if item != nil {
+            let d =  segue.destinationViewController as DetailViewController
+            let tmp = server.load(item!.value, real: d.recieve)
+            d.setDoc(tmp)
+            d.setNode(item!)
         }
-        let d =  segue.destinationViewController as DetailViewController
-        let tmp = server.load(item.value, real: d.recieve)
-        d.setDoc(tmp)
-        d.setNode(item)
     }
 
 }

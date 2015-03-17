@@ -19,6 +19,7 @@ public class DetailViewController: UIViewController,UIWebViewDelegate {
     var node:TreeNode?
     override public func viewDidLoad() {
         super.viewDidLoad()
+        Content.delegate = self
         recieve(doc)
     }
     
@@ -36,6 +37,19 @@ public class DetailViewController: UIViewController,UIWebViewDelegate {
     }
     
     public func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        let url = request.URL.path!.lastPathComponent
+        println("path = \(url)")
+        if url == "/"{
+            return true
+        }
+        if url.toInt() != nil {
+            GoTo(url.toInt()!)
+        }
         return false
+    }
+    //отправляет на страничку тернера в приложении
+    public func GoTo(id:Int) {
+        let p = navigationController?.childViewControllers[0] as MainViewController
+        p.performSegueWithIdentifier("ShowDetail", sender: NSIndexPath(forItem: id, inSection: -1))
     }
 }
