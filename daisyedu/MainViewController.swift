@@ -10,19 +10,42 @@ import UIKit
 
 class MainViewController: UITableViewController {
 
+    @IBOutlet weak var menuBtn: UIBarButtonItem!
     required init(coder aDecoder: NSCoder) {
         server = Server()
         super.init(coder: aDecoder)
         
     }
     var server:Server;
+    var docsFilter = -1;
+    func SetFilter(newF:Int) {
+        docsFilter = newF
+        filterCourses()
+    }
+    func filterCourses() {
+        switch(docsFilter) {
+        case 1://Всё(по умолчанию)
+            break;
+        case 2://По категориям
+            break;
+        case 3://События
+            break;
+        case 4://Книги
+            break;
+        case 5://Новости
+            break;
+        default:// по умолчанию всё
+            SetFilter(1)
+        }
+    }
     //вызывается после получения от сервера очередной порции данных
     func dataLoaded() {
          tableView.reloadData()
     }
     override func viewDidLoad() {
         server = Server(dataLoaded)
-        super.viewDidLoad()        
+        super.viewDidLoad()
+       // menuBtn.target = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -61,6 +84,7 @@ class MainViewController: UITableViewController {
         else { return "Курсы и тренинги" }
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowDetail" {
         let p = sender as NSIndexPath
         var item:TreeNode?
         if p.section != -1 {
@@ -78,6 +102,7 @@ class MainViewController: UITableViewController {
             let tmp = server.load(item!.value, real: d.recieve)
             d.setDoc(tmp)
             d.setNode(item!)
+        }
         }
     }
 
