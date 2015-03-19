@@ -19,7 +19,7 @@ class MenuViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("MenuToMain", sender: indexPath)
+        if indexPath.item != 0 { performSegueWithIdentifier("MenuToMain", sender: indexPath) }
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let p = sender as NSIndexPath
