@@ -37,7 +37,7 @@ public class DetailViewController: UIViewController,UIWebViewDelegate {
     }
     
     public func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        let url = request.URL.path!.lastPathComponent
+        let url = request.URL!.path!.lastPathComponent
         println("path = \(url)")
         if url == "/"{
             return true
@@ -49,7 +49,7 @@ public class DetailViewController: UIViewController,UIWebViewDelegate {
     }
     //отправляет на страничку тернера в приложении
     public func GoTo(id:Int) {
-        let p = navigationController?.childViewControllers[0] as MainViewController
+        let p = navigationController?.childViewControllers[0] as! MainViewController
         p.performSegueWithIdentifier("ShowDetail", sender: NSIndexPath(forItem: id, inSection: -1))
     }
 }

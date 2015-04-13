@@ -41,7 +41,7 @@ public class Server {
                 println(error.localizedDescription)
             } else  {
             dispatch_async(dispatch_get_main_queue(), {
-                self.data = DocumentsList(RawJSON: NSString(data:data, encoding:NSUTF8StringEncoding)!)
+                self.data = DocumentsList(RawJSON: NSString(data:data, encoding:NSUTF8StringEncoding)! as String)
                 self.loadedCallback()
                 })
                 NSUserDefaults.standardUserDefaults().setObject(self.data.back(), forKey: "docs_list")
@@ -71,12 +71,12 @@ public class Server {
         var url: NSURL = NSURL( string: encoded!)!
         var session = NSURLSession.sharedSession()
         var task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
-            println("Doc loaded: "+NSString(data:data, encoding:NSUTF8StringEncoding)!)
+            println("Doc loaded: " + (NSString(data:data, encoding:NSUTF8StringEncoding)! as String))
             if((error) != nil) {
                 println(error.localizedDescription)
             } else {
             dispatch_async(dispatch_get_main_queue(), {
-                var x = Document(_json: NSString(data:data, encoding:NSUTF8StringEncoding)!,sd: sd)
+                var x = Document(_json: NSString(data:data, encoding:NSUTF8StringEncoding)! as String,sd: sd)
                 /* var err: NSError?
                 var jsonStr = NSJSONSerialization.dataWithJSONObject(x, options: NSJSONWritingOptions.PrettyPrinted, error: &err)*/
                 d.setObject(x.back(), forKey: "document\(sd.getID())")

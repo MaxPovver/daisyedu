@@ -22,8 +22,8 @@ class MenuViewController: UITableViewController {
         if indexPath.item != 0 { performSegueWithIdentifier("MenuToMain", sender: indexPath) }
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let p = sender as NSIndexPath
-        let d =  (segue.destinationViewController as UINavigationController).childViewControllers[0] as MainViewController;
+        let p = sender as! NSIndexPath
+        let d =  (segue.destinationViewController as! UINavigationController).childViewControllers[0] as! MainViewController;
         d.SetFilter(p.item)
     }
 }

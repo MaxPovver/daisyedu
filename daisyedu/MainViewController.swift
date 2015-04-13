@@ -43,7 +43,7 @@ class MainViewController: UITableViewController {
          tableView.reloadData()
     }
     override func viewDidLoad() {
-        server = Server(dataLoaded)
+        server = Server(loadedCallback: dataLoaded)
         super.viewDidLoad()
        // menuBtn.target = self
     }
@@ -51,9 +51,10 @@ class MainViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        server.getDocs().getTree().DropCaches()
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("DocCell") as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("DocCell") as! UITableViewCell
         let first = server.getTree().getLayer(1)
         if first[indexPath.section].value.getID() != 2 {
             let layer = server.getTree().getLayer(2, filterID: first[indexPath.section].value.getID());
@@ -85,7 +86,7 @@ class MainViewController: UITableViewController {
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowDetail" {
-        let p = sender as NSIndexPath
+        let p = sender as! NSIndexPath
         var item:TreeNode?
         if p.section != -1 {
             let x = server.getTree().getLayer(1)[p.section];
@@ -98,7 +99,7 @@ class MainViewController: UITableViewController {
             item = server.getTree().getForID(p.item)
         }
         if item != nil {
-            let d =  segue.destinationViewController as DetailViewController
+            let d =  segue.destinationViewController as! DetailViewController
             let tmp = server.load(item!.value, real: d.recieve)
             d.setDoc(tmp)
             d.setNode(item!)

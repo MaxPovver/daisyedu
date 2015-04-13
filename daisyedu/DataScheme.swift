@@ -33,13 +33,13 @@ public class Document {
     /**********************************/
     public init(_json:String) {
         var err: NSError?
-        var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
-        if !initwj(json) { exit(42); }
+        var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
+        if !initwj(json as [NSObject : AnyObject]) { exit(42); }
     }
     public init(_json:String, sd:SmallDocument) {
         var err: NSError?
-        var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
-        if !initwj(json) { exit(42); }
+        var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
+        if !initwj(json as [NSObject : AnyObject]) { exit(42); }
         /*********************************************/
         if getImage() == nil { _image = sd.getImage() }
         if getCoach() == nil { _coach = sd.getCoach() }
@@ -48,7 +48,7 @@ public class Document {
         /**********************************************/
     }
     private func initwj(_json:[NSObject:AnyObject])->Bool {
-        let json = _json["object"] as NSDictionary
+        let json = _json["object"] as! NSDictionary
         if let __id = json["id"] as? Int{
             if let __title = json["pagetitle"] as? String{
                 if let __description = json["description"] as? String{
@@ -200,12 +200,12 @@ public class SmallDocument {
         if json["id"]==nil || json["pagetitle"]==nil || json["parent"]==nil
             {exit(42);}
         if json["empty"]==nil || json["deleted"]==nil || json["publishedon"]==nil  { exit(42) }
-        _id = json["id"] as Int
-        _title = json["pagetitle"] as String
-        _parent = json["parent"] as Int
-        _empty = json["empty"] as Bool
-        _deleted = json["deleted"] as Bool
-        _publishedon = json["publishedon"] as Int
+        _id = json["id"] as! Int
+        _title = json["pagetitle"] as! String
+        _parent = json["parent"] as! Int
+        _empty = json["empty"] as! Bool
+        _deleted = json["deleted"] as! Bool
+        _publishedon = json["publishedon"] as! Int
         /*****************************************/
         _image = json["image"] as? String
         _coach = json["coach"] as? String
@@ -215,8 +215,8 @@ public class SmallDocument {
     }
     public init(_json:String) {
         var err: NSError?
-        var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
-        initwj(json)
+        var json = NSJSONSerialization.JSONObjectWithData(_json.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
+        initwj(json as [NSObject : AnyObject])
     }
     public init(WithJSON json:[NSObject:AnyObject]) {
         initwj(json)
@@ -266,7 +266,7 @@ public class SmallDocument {
     public func asJSONStr()->String {
         var tmp = back();
         var data = NSJSONSerialization.dataWithJSONObject(tmp, options: NSJSONWritingOptions.PrettyPrinted, error: nil)
-        return NSString(data: data!,encoding:NSUTF8StringEncoding)!
+        return NSString(data: data!,encoding:NSUTF8StringEncoding)! as String
     }
 }
 
@@ -283,12 +283,12 @@ public class DocumentsList {
             return;
         } else {
         var err: NSError?
-        var json = NSJSONSerialization.JSONObjectWithData(rawJson.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as NSDictionary
+        var json = NSJSONSerialization.JSONObjectWithData(rawJson.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
         println(rawJson)
         if let count = json["total"] as? NSInteger {
             
             if let results = json["results"] as? [NSDictionary]{
-                docs = results.map({SmallDocument(WithJSON: $0 as NSDictionary)})//лямбда-магия)
+                docs = results.map({SmallDocument(WithJSON: $0 as NSDictionary as [NSObject : AnyObject])})//лямбда-магия)
                 tree = DocTree(root: SmallDocument(WithJSON: ["id":0,"parent":0,"pagetitle":"Меню","empty":true,"deleted":false,"publishedon":0]));
                 tree.addRange(docs)
                // tree.print()
@@ -303,7 +303,7 @@ public class DocumentsList {
         if let count = json["total"] as? NSInteger {
             
             if let results = json["results"] as? [NSDictionary]{
-                docs = results.map({SmallDocument(WithJSON: $0 as NSDictionary)})//и еще лямбда магия
+                docs = results.map({SmallDocument(WithJSON: $0 as NSDictionary as [NSObject : AnyObject])})//и еще лямбда магия
                 tree = DocTree(root: SmallDocument(WithJSON: ["id":0,"parent":0,"pagetitle":"Меню","empty":true,"deleted":false,"publishedon":0]));
                 tree.addRange(docs)
                 return;
@@ -372,7 +372,7 @@ public class DocTree {
                     remove.append(index)
                 }
             }
-            remove.sort(>);
+            remove.sort(>);//лямбда-магия
             for (val) in remove {
                 ts.removeAtIndex(val)
             }
@@ -467,9 +467,9 @@ public class DocTree {
     }
     //удаляет все кешированные данные
      func DropCaches() {
-        getAll3PlusCache.removeAll(keepCapacity: true)
-        layerCache.removeAll(keepCapacity: true)
-        filteredLayerCache.removeAll(keepCapacity: true)
+        getAll3PlusCache.removeAll(keepCapacity: false)
+        layerCache.removeAll(keepCapacity: false)
+        filteredLayerCache.removeAll(keepCapacity: false)
     }
     func toString() {
         
