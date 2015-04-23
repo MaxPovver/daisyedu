@@ -125,10 +125,10 @@ public class Document {
         }
         if getCoach() != nil  && getPrice() != nil && !getPrice()!.isEmpty{
             if getCoach() != nil {
-                res = res + "<br><span>Автор:</span> <a href=\"http://coaches/\(getCoach()!)\"><span>\(s.CoachToStr(getCoach()!)) </span></a>"
+                res = res + "<br><span>Автор:</span> <a href=\"http://coaches/\(getCoach()!)\"><span>\(s!.CoachToStr(getCoach()!)) </span></a>"
             }
             if getFormat() != nil {
-                res = res + "<br><span>Формат: \(s.FormatToStr(getFormat()!))</span>"
+                res = res + "<br><span>Формат: \(s!.FormatToStr(getFormat()!))</span>"
             }
             if getPrice() != nil {
                 res = res + "<br><span>Цена: \(getPrice()!) Р.</span>"
@@ -453,6 +453,12 @@ public class DocTree {
         return getAll3PlusCache
     }
     func getForID(id:Int)->TreeNode? {
+        for (v) in getLayer(1) {
+            if v.value.getID() == id {
+                return v
+            }
+        }
+
         for (v) in getLayer(2) {
             if v.value.getID() == id {
                 return v

@@ -7,7 +7,7 @@
 //
 import Foundation;
 
-var s:Server=Server();
+var s:Server?
 
 //вся работа с серверным апи идет через него
 public class Server {
@@ -25,13 +25,14 @@ public class Server {
     public init(loadedCallback lbc:()->Void) {
         let request = self.resources
         loadedCallback = lbc
-        if useCache {
+       /* if useCache {
             if let tmp = NSUserDefaults.standardUserDefaults().objectForKey("docs_list") as? [NSObject:AnyObject] {
+            if tmp.count>0 {
                 self.data = DocumentsList(json: tmp)
-                lbc()
+                loadedCallback()
+                }
             }
-        s = self
-        }
+        }*/
         let encoded = request.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         var url: NSURL = NSURL( string: encoded!)!
         var session = NSURLSession.sharedSession()
@@ -40,20 +41,27 @@ public class Server {
             if((error) != nil) {
                 println(error.localizedDescription)
             } else  {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.data = DocumentsList(RawJSON: NSString(data:data, encoding:NSUTF8StringEncoding)! as String)
-                self.loadedCallback()
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.data = DocumentsList(RawJSON: NSString(data:data, encoding:NSUTF8StringEncoding)! as String)
+                    self.loadedCallback()
                 })
                 NSUserDefaults.standardUserDefaults().setObject(self.data.back(), forKey: "docs_list")
             }
-            })
-            task.resume()
+        })
+        task.resume()
     }
     public func getDocs()->DocumentsList {
         return data
     }
     public func getTree()->DocTree {
         return getDocs().getTree()
+    }
+    public func getChildren(fromID:Int)->[TreeNode]{
+        var t = getTree().getForID(fromID)
+        return t!.children
+    }
+    public func getCoaches()->[TreeNode] {
+        return getChildren(6)
     }
     //получает из сети полную инфу по конкретному доку
     //сразу возвращает из кеша(если есть), либо заглушку

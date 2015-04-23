@@ -13,6 +13,7 @@ public class DetailViewController: UIViewController,UIWebViewDelegate {
     
     required public init(coder aDecoder: NSCoder) {
         doc = Document.stub()
+        
         super.init(coder: aDecoder)
     }
     var doc:Document;
@@ -32,7 +33,7 @@ public class DetailViewController: UIViewController,UIWebViewDelegate {
     func recieve(document:Document) {
         doc = document
         navigationItem.title = doc.getTitle()
-        navigationItem.prompt = node?.pathTo()
+        //navigationItem.prompt = node?.pathTo()
         Content.loadHTMLString(doc.getContent(), baseURL: NSURL(string: "http://daisyedu.com/"))
     }
     
