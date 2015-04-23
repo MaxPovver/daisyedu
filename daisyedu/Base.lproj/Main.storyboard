@@ -1,87 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="jWd-3e-pxK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="SRS-eQ-8e9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <scenes>
-        <!--News View Controller-->
-        <scene sceneID="M3Q-Od-ZEz">
-            <objects>
-                <viewController id="K6S-6z-HVx" customClass="NewsViewController" customModule="daisyedu" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ZTY-Ok-nVz"/>
-                        <viewControllerLayoutGuide type="bottom" id="pZl-NG-o0j"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Eh2-WE-Yja">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Новости" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pL3-KL-aQr">
-                                <rect key="frame" x="56" y="28" width="212" height="135"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="46"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qfP-Ff-tbd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1018" y="-1025"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="QoE-Lq-NXg">
-            <objects>
-                <viewController id="cXj-Me-36S" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="KBO-Pt-wnx"/>
-                        <viewControllerLayoutGuide type="bottom" id="jqi-uX-CYB"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="SYW-k8-khP">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="События" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qNf-ux-Zqq">
-                                <rect key="frame" x="68" y="54" width="212" height="135"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="46"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WsA-ki-ZZ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1058" y="-183"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="meT-oH-tna">
-            <objects>
-                <viewController id="8c7-7b-63u" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="XeP-Ui-3Xy"/>
-                        <viewControllerLayoutGuide type="bottom" id="tsK-Ym-joB"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="XAr-Gl-ZcS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Книги" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="abu-eC-tNM">
-                                <rect key="frame" x="45" y="6" width="212" height="135"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="46"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cLn-v0-Fu1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1082" y="905"/>
-        </scene>
         <!--Авторы-->
         <scene sceneID="agu-F6-NPV">
             <objects>
@@ -147,12 +69,12 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DmY-Dc-Dp2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1718" y="1825"/>
+            <point key="canvasLocation" x="2530" y="1825"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="dVF-o1-3YL">
             <objects>
-                <viewController id="Jn3-Sl-RXJ" customClass="DetailViewController" customModule="daisyedu" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="Jn3-Sl-RXJ" customClass="DetailViewController" customModule="daisyedu" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sOk-mE-myF"/>
                         <viewControllerLayoutGuide type="bottom" id="IqO-CW-9yG"/>
@@ -180,12 +102,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FKd-oR-BSy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2496" y="1845"/>
+            <point key="canvasLocation" x="3583" y="1358"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Авторы-->
         <scene sceneID="D3D-j0-WLp">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jWd-3e-pxK" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Авторы" id="bjM-Xd-YLQ"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="jkq-26-9VS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -198,7 +121,168 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="35s-FQ-YmG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="906" y="1825"/>
+            <point key="canvasLocation" x="1718" y="1825"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="qeR-MN-U9q">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="SRS-eQ-8e9" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="TgU-gR-wzc">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="jWd-3e-pxK" kind="relationship" relationship="viewControllers" id="sPk-VO-KzM"/>
+                        <segue destination="g8U-7t-nTf" kind="relationship" relationship="viewControllers" id="3id-ea-Bvy"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6eS-Sf-QSb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="826" y="1473"/>
+        </scene>
+        <!--Книги-->
+        <scene sceneID="NEU-ES-Z47">
+            <objects>
+                <collectionViewController title="Книги" id="Qgs-D7-ipE" customClass="BooksViewController" customModule="daisyedu" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="48b-hw-ZUl">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.25098039215686274" green="0.25098039215686274" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="o0g-Rc-1fx">
+                            <size key="itemSize" width="271" height="295"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BookCell" id="Vzx-Yp-pg6" customClass="CollCellView" customModule="daisyedu" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="271" height="295"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TYh-1t-eqC">
+                                            <rect key="frame" x="8" y="8" width="255" height="254"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Загрузка..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HGb-Id-Nfn">
+                                            <rect key="frame" x="8" y="266" width="255" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="Picture" destination="TYh-1t-eqC" id="UIN-Mt-fhu"/>
+                                    <outlet property="Title" destination="HGb-Id-Nfn" id="t4R-cT-1sq"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="Qgs-D7-ipE" id="sH9-4Q-I4y"/>
+                            <outlet property="delegate" destination="Qgs-D7-ipE" id="23B-22-7NE"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="Книги" id="iso-xB-mGa">
+                        <barButtonItem key="backBarButtonItem" title="Назад" id="UJ3-DE-f7H"/>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="Jn3-Sl-RXJ" kind="show" identifier="ShowDetail" id="2b9-au-eBW"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lCB-JS-SyV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2530" y="1153"/>
+        </scene>
+        <!--Авторы-->
+        <scene sceneID="XTS-0T-ZM2">
+            <objects>
+                <collectionViewController id="sSi-KY-as3" customClass="AuthorsViewController" customModule="daisyedu" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="e1I-ih-0Qy">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="JOI-uX-fJ3">
+                            <size key="itemSize" width="181" height="327"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AuthorCell" id="78r-gv-Zo2" customClass="CollCellView" customModule="daisyedu" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="170" height="324"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9W-qu-n5a">
+                                            <rect key="frame" x="8" y="291" width="227" height="30"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="highlightedColor" red="1" green="0.1383054151" blue="0.082604707149999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wzc-WF-h71">
+                                            <rect key="frame" x="8" y="8" width="154" height="275"/>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="c9W-qu-n5a" secondAttribute="trailing" constant="8" id="ABV-Tw-Fmi"/>
+                                    <constraint firstItem="c9W-qu-n5a" firstAttribute="leading" secondItem="78r-gv-Zo2" secondAttribute="leading" constant="8" id="Icy-Q9-pEw"/>
+                                    <constraint firstAttribute="bottom" secondItem="c9W-qu-n5a" secondAttribute="bottom" constant="13" id="JRs-Yf-qkq"/>
+                                    <constraint firstItem="Wzc-WF-h71" firstAttribute="top" secondItem="78r-gv-Zo2" secondAttribute="top" constant="8" id="Vyf-F0-ljj"/>
+                                    <constraint firstAttribute="trailing" secondItem="Wzc-WF-h71" secondAttribute="trailing" constant="8" id="bdJ-BG-Wlb"/>
+                                    <constraint firstItem="Wzc-WF-h71" firstAttribute="leading" secondItem="78r-gv-Zo2" secondAttribute="leading" constant="8" id="maa-rp-l3h"/>
+                                    <constraint firstItem="c9W-qu-n5a" firstAttribute="top" secondItem="Wzc-WF-h71" secondAttribute="bottom" constant="8" id="oUI-lI-Hm5"/>
+                                </constraints>
+                                <size key="customSize" width="170" height="324"/>
+                                <connections>
+                                    <outlet property="Picture" destination="Wzc-WF-h71" id="BOH-6I-r17"/>
+                                    <outlet property="Title" destination="c9W-qu-n5a" id="fZL-3o-1Vz"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="sSi-KY-as3" id="gfl-Vg-nI2"/>
+                            <outlet property="delegate" destination="sSi-KY-as3" id="4Nr-qR-zbX"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="Авторы" id="GRn-oT-1bk">
+                        <barButtonItem key="backBarButtonItem" title="Назад" id="WPT-La-NN5"/>
+                    </navigationItem>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q1i-Km-eOf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2530" y="1825"/>
+        </scene>
+        <!--Книги-->
+        <scene sceneID="huN-eW-Fxc">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="g8U-7t-nTf" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Книги" id="vl9-Di-4mi"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="iJo-AU-rtG">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Qgs-D7-ipE" kind="relationship" relationship="rootViewController" id="b9z-ge-yvk"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qta-pK-Tld" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1718" y="1153"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="2b9-au-eBW"/>
+    </inferredMetricsTieBreakers>
 </document>

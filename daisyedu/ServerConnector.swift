@@ -14,7 +14,8 @@ public class Server {
     let resources = "http://daisyedu.com/rest/resource";
     let resource = "http://daisyedu.com/rest/resource&id=";
     var data = DocumentsList();
-    var useCache = true;
+    var useCache = false;
+    public var loaded = false
     public var Bad = false;
     var loadedCallback:()->Void;
     public init()
@@ -25,14 +26,15 @@ public class Server {
     public init(loadedCallback lbc:()->Void) {
         let request = self.resources
         loadedCallback = lbc
-       /* if useCache {
+        if useCache {
             if let tmp = NSUserDefaults.standardUserDefaults().objectForKey("docs_list") as? [NSObject:AnyObject] {
             if tmp.count>0 {
                 self.data = DocumentsList(json: tmp)
                 loadedCallback()
+                loaded = true
                 }
             }
-        }*/
+        }
         let encoded = request.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         var url: NSURL = NSURL( string: encoded!)!
         var session = NSURLSession.sharedSession()
@@ -44,6 +46,7 @@ public class Server {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.data = DocumentsList(RawJSON: NSString(data:data, encoding:NSUTF8StringEncoding)! as String)
                     self.loadedCallback()
+                    self.loaded = true
                 })
                 NSUserDefaults.standardUserDefaults().setObject(self.data.back(), forKey: "docs_list")
             }
@@ -62,6 +65,9 @@ public class Server {
     }
     public func getCoaches()->[TreeNode] {
         return getChildren(6)
+    }
+    public func getBooks()->[TreeNode] {
+        return getChildren(27)
     }
     //получает из сети полную инфу по конкретному доку
     //сразу возвращает из кеша(если есть), либо заглушку

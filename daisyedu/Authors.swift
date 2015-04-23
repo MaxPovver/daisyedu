@@ -16,6 +16,13 @@ public class AuthorsViewController: UICollectionViewController {
         super.viewDidLoad()
         if s==nil || s!.Bad {
             s = Server(loadedCallback: loaded)
+        } else {
+            dispatch_async(
+                
+                dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+                    while(!s!.loaded) {}
+                    self.loaded()
+            })
         }
     }
     func loaded() {
