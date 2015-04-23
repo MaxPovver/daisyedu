@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>2B267FA6-571E-4C6B-A08B-AEBE45AC2004</string>
 	<key>IDESourceControlProjectName</key>
-	<string>daisyedu</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>FFFEFF75D68207BF62C3F73FEF1DA1E30FE1BD80</key>
 		<string>https://github.com/MaxPovver/daisyedu.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>daisyedu.xcodeproj</string>
+	<string>daisyedu.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>FFFEFF75D68207BF62C3F73FEF1DA1E30FE1BD80</key>
