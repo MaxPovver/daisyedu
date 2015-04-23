@@ -19,7 +19,6 @@ public class AuthorsViewController: UICollectionViewController {
         }
     }
     func loaded() {
-        sleep(1)
         authors = s!.getCoaches()
         collectionView?.reloadData()
     }

@@ -16,8 +16,8 @@ public class CollCellView: UICollectionViewCell {
             
             dispatch_get_main_queue(),{
         self.Title.text = node.value.getTitle()
-        var p = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last as! String
-        let path = p + "/cache/img/\(node.value.getID())"
+        let cache_path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).last as! String
+        let path = cache_path + "/\(node.value.getID()).jpg"
        if NSFileManager.defaultManager().fileExistsAtPath(path)
        {
             self.Picture.image = UIImage(contentsOfFile: path)
@@ -30,7 +30,12 @@ public class CollCellView: UICollectionViewCell {
          self.Picture.image = UIImage(data: data!)
         dispatch_async(
             
-                dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {autoreleasepool {data?.writeToFile(path, atomically: true)
+                dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {autoreleasepool {
+                    if data!.writeToFile(path, atomically: true) {
+                        println(path+" saved")
+                    } else {
+                        println(path+" failed")
+                    }
                     data = nil
                 }
         })
